@@ -237,7 +237,7 @@ def get_graph_data():
   keyword=request.args.get('keyword', '').strip()
   max_nodes=request.args.get('max_nodes', 100, type=int)
 
-  papers+query = Paper.query
+  papers_query = Paper.query
 
   if year_from:
     papers_query= papers_query.filter(Paper.year >= year_from)
@@ -458,7 +458,7 @@ def export_papers():
     return jsonify({'error': 'Only JSON format supported currently'}), 400
   
 
-@bp.route('/export/graph-data', methpds=['POST'])
+@bp.route('/export/graph-data', methods=['POST'])
 def export_graph_data():
   data=request.get_json()
 
