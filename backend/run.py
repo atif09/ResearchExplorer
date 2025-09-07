@@ -1,0 +1,23 @@
+import os
+from app import create_app, db
+from flask_migrate import upgrade
+
+app = create_app(os.getenv('FLASK_ENV', 'development'))
+
+@app.shell_context_processor
+def make_shell_context():
+  """Make database models available in Flask shell"""
+  from app.models import Paper, Author, Keyword,Citation
+  return {
+    'db': db,
+    'Paper': Paper,
+    'Author': Author,
+    'Keyword': Keyword,
+    'Citation': Citation
+  }
+
+if __name__=='__main__':
+  with app.app_context():
+    db.create_all()
+
+  app.run(debug=True, host='0.0.0.0', port=5000)
