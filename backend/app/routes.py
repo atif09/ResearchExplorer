@@ -51,7 +51,7 @@ def create_paper():
       for author_name in data.get('authors', []):
         author = Author.query.filter_by(name=author_name).first()
         if not author:
-          author = Author(Name=author_name)
+          author = Author(name=author_name)
           db.session.add(author)
         paper.authors.append(author)
 

@@ -39,7 +39,7 @@ class ResearchAnalytics:
       .group_by(Author.id)\
       .having(func.count(Paper.id) >= min_papers).all()
     
-    collborations = defaultdict(set)
+    collaborations = defaultdict(set)
 
     for author in authors:
       for paper in author.papers: 
