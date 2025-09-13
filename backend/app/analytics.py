@@ -1,4 +1,4 @@
-from app.models import Paper, Author, Keyword, Citation
+from app.models import Paper, Author, Keyword, Citation, paper_authors
 from app import db
 from sqlalchemy import func, desc
 from collections import defaultdict
@@ -114,7 +114,7 @@ def analyze_citation_patterns():
           'in_degree_centrality': in_degree_centrality.get(paper_id, 0)
         })
 
-    density = nx.desnity(G) if len(G.nodes()) > 1 else 0
+    density = nx.density(G) if len(G.nodes()) > 1 else 0
     avg_clustering = nx.average_clustering(G.to_undirected()) if len(G.nodes()) > 1 else 0
 
     return {
