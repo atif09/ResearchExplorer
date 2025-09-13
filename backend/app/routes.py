@@ -651,7 +651,7 @@ def export_papers():
   else:
     return jsonify({'error': 'Unsupported format. Use json or csv'}), 400
   
-@bp.route('/export/graph-data', methods=['[POST]'])
+@bp.route('/export/graph-data', methods=['POST'])
 def export_graph_data():
   data = request.get_json()
 
@@ -661,7 +661,7 @@ def export_graph_data():
   node_ids = data['node_ids']
   papers = Paper.query.filter(Paper.id.in_(node_ids)).all()
 
-  citations = Citation.query.filte(
+  citations = Citation.query.filter(
     Citation.citing_paper_id.in_(node_ids),
     Citation.cited_paper_id.in_(node_ids)
   ).all()
@@ -686,7 +686,7 @@ def export_trends():
         .group_by(Paper.year).order_by(Paper.year).all()
     trends['papers_per_year'] = [{'year': year, 'count': count} for year, count in yearly_counts]
 
-    top_keywords = db.session.query9Keyword.name, func.count(Paper.id).label('count')\
+    top_keywords = db.session.query(Keyword.name, func.count(Paper.id).label('count'))\
         .join(Keyword.papers)\
         .group_by(Keyword.name)\
         .order_by(desc('count'))\
@@ -756,7 +756,7 @@ def upload_papers():
   try: 
     if file.filename.lower().endswith('.csv'):
       stream = io.StringIO(file.stream.read().decode('UTF8'), newline=None)
-      csv_input = csv.DictRender(stream)
+      csv_input = csv.DictReader(stream)
       papers_data = list(csv_input)
 
     else:
