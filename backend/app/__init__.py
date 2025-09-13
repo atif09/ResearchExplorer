@@ -24,26 +24,28 @@ def create_app(config_name='development'):
   cache.init_app(app)
   ma.init_app(app)
 
-  CORS(app,resources = {
+  CORS(app, resources = {
     r'/api/*': {
-      'origins': ['https://localhost:3000', 'https://127.0.0.1:3000'],
-      'methods': ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      'allow_headers': ['Content-Type', 'Authorization']
+      'origins': ['https://localhost:3000', 'http://127.0.0.1:3000'],
+      'methods': ['GET','POST','PUT','DELETE','OPTIONS'],
+      'allow_headers': ['Content-Type', 'Authorization'],
     }
   })
 
   from app.routes import bp as main_bp
   app.register_blueprint(main_bp, url_prefix='/api')
 
-  from app.errors import bp as errors_bp
+  from app.errors import bp  as errors_bp
   app.register_blueprint(errors_bp)
 
-  if not app.debug and not app.testing:
+  if not app.debug and not app.testing: 
     if not os.path.exists('logs'):
       os.mkdir('logs')
+
     file_handler = RotatingFileHandler('logs/research_explorer.log',
-                                       maxBytes=10240, backupCount=10)
-    file_handler=setFormatter(logging.Formatter(
+                                        maxBytes=10240, backupCount=10)
+    
+    file_handler.setFormatter(logging.Formatter(
       '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     ))
     file_handler.setLevel(logging.INFO)
